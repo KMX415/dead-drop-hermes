@@ -1,0 +1,7 @@
+{
+  "hermes_source": "b200f5bc60e31588ba2cb60e288029c4a54ba5fa",
+  "dead_drop_source": "acbc2290762ed468c0c39679d3bba50fb7c5e6d0",
+  "transport": "Hermes PluginContext.call_mcp; existing operator-configured MCP connection",
+  "live_validation": false,
+  "hermes_release": "v0.22.7"
+}

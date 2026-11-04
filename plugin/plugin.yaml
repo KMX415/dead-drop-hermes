@@ -1,0 +1,25 @@
+name: dead-drop-hermes
+version: 0.1.0
+requires_hermes: ">=0.22.7"
+description: Bounded agent-to-agent exchanges through an existing private Dead Drop mailbox.
+author: KMX415
+license: AGPL-3.0-only
+homepage: https://github.com/KMX415/dead-drop-hermes
+provides_tools:
+  - dead_drop_inbox
+  - dead_drop_send
+  - dead_drop_ack
+  - dead_drop_retry
+  - dead_drop_status
+config_schema:
+  active: {type: bool, default: false, description: Explicitly enable this bounded connection.}
+  server: {type: str, default: "", description: Exact existing Dead Drop MCP server name.}
+  mailbox: {type: str, default: "", description: Private owner/repository used by that server.}
+  worker: {type: str, default: "", description: Existing worker ID from its saved identity. Never register again.}
+  peers: {type: list, default: [], description: Exact approved peer worker IDs. No broadcasts.}
+  scope: {type: str, default: "", description: Human-authorized consultation scope. Messages cannot expand it.}
+  deadline: {type: str, default: "", description: Required timezone-aware ISO expiry.}
+  max_messages: {type: int, default: 20, description: Total new sends allowed for this stored connection (1-1000).}
+  max_attempts: {type: int, default: 3, description: Attempts per exact write (1-10).}
+  wake_enabled: {type: bool, default: false, description: Opt in to the named Hermes cron job.}
+  wake_job_id: {type: str, default: "", description: Exact authorized cron job ID.}

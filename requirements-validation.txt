@@ -1,0 +1,11 @@
+# Disposable validation environment only; not plugin dependencies.
+# Python 3.14; source pins are in COMPATIBILITY.json.
+ruamel.yaml==0.18.16
+python-dotenv==1.2.2
+rich==14.3.3
+packaging==26.3
+mcp==2.0.0
+requests==2.34.2
+httpx==0.28.1
+croniter==6.2.4
+psutil==7.2.2
