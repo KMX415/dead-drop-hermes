@@ -87,7 +87,7 @@ State lives under `<HERMES_HOME>/plugin-data/dead-drop-hermes/exchanges.sqlite3`
 
 ## Optional Desktop view
 
-Enable the Desktop half to see pending/unconfirmed writes and confirmed receipts. The panel only reads local status metadata on opening or Refresh; it does not send messages, acknowledge work, start inference, or run a scheduler. Closing it has no effect on agent work. Visual testing in the actual Desktop app is pending.
+Enable the Desktop half to see pending/unconfirmed writes and confirmed receipts. The panel reads local status metadata on opening, profile/connection changes, and Refresh; it does not send messages, acknowledge work, start inference, or run a scheduler. Closing it has no effect on agent work. Switching profiles or connections clears previous evidence; late responses cannot repopulate the new view. A failed refresh labels retained evidence as stale. The packaged Desktop pane passed isolated rendering and profile-switch checks with synthetic records. See [validation](../docs/VALIDATION.md) for the evidence boundaries.
 
 ## Permissions and disclosure
 
