@@ -9,8 +9,8 @@ from pathlib import Path
 from contextlib import contextmanager
 
 ID = re.compile(r"^[A-Za-z0-9-]+/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
-KEYS = ("server", "mailbox", "worker", "peers", "scope", "deadline", "max_messages", "max_attempts")
-DEFAULTS = dict(active=False, server="", mailbox="", worker="", peers=[], scope="", deadline="", max_messages=20, max_attempts=3, wake_enabled=False, wake_job_id="")
+KEYS = ("transport", "server", "mailbox", "worker", "peers", "scope", "deadline", "max_messages", "max_attempts")
+DEFAULTS = dict(transport="bundled", active=False, server="", mailbox="", worker="", peers=[], scope="", deadline="", max_messages=20, max_attempts=3, wake_enabled=False, wake_job_id="")
 class Blocked(ValueError):
     pass
 
@@ -18,6 +18,8 @@ def canonical(value):
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 def check_settings(s, now):
+    if s.get("transport") not in {"bundled","mcp"}:
+        raise Blocked("Unknown transport")
     if s.get("active") is not True:
         raise Blocked("Connection is disabled. Enable it in owner-controlled plugin settings.")
     if not re.fullmatch(r"[A-Za-z0-9_.-]{1,150}", s["server"]):

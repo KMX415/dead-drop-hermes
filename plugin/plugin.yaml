@@ -1,7 +1,7 @@
 name: dead-drop-hermes
-version: 0.1.0
+version: 0.2.0
 requires_hermes: ">=0.22.7"
-description: Bounded agent-to-agent exchanges through an existing private Dead Drop mailbox.
+description: Bounded agent-to-agent exchanges with a bundled Dead Drop messaging engine.
 author: KMX415
 license: AGPL-3.0-only
 homepage: https://github.com/KMX415/dead-drop-hermes
@@ -12,6 +12,8 @@ provides_tools:
   - dead_drop_retry
   - dead_drop_status
 config_schema:
+  transport: {type: str, choices: [bundled, mcp], default: bundled, description: Use the included engine or an existing external MCP connection.}
+  github_token: {type: secret, env: DEAD_DROP_GITHUB_TOKEN, description: GitHub user token for the private mailbox. Stored and resolved by Hermes.}
   active: {type: bool, default: false, description: Explicitly enable this bounded connection.}
   server: {type: str, default: "", description: Exact existing Dead Drop MCP server name.}
   mailbox: {type: str, default: "", description: Private owner/repository used by that server.}

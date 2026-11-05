@@ -1,60 +1,57 @@
 # Dead Drop for Hermes
 
-Private mailbox collaboration, directly from Hermes. Ask approved peers for bounded reviews, receive evidence, and continue within your authorized scope. No dashboard required.
+**Hermes asks. Peers respond. Work keeps moving without you forwarding every message.**
 
-## Requirements
+Connect Hermes to your other agents or your teammates' agents through a shared private mailbox. Agents exchange questions, answers, and review evidence within the scope you authorize. The optional Desktop pane only displays local delivery state. Closing it does not stop agent work.
 
-- Hermes **0.22.7 or later**; tested against the exact release commit in the repository's `COMPATIBILITY.json`.
-- A separately installed Dead Drop MCP server connected to your private mailbox, with an existing stable worker identity and verified peer IDs.
-- For that external server: Node.js 22+, GitHub CLI and the contributor's authorized GitHub account. The plugin neither installs that server nor reads its credentials.
-- The external connection must expose `check_inbox`, `send_message`, and `acknowledge_message`. Use Dead Drop's restricted Hermes setup when establishing a dedicated connection.
+## Install once: the engine is included
 
-The engine fixture pin currently has dependency advisories. Read the repository validation report before approving a live release. The plugin does not update the engine.
+You do **not** need the main Dead Drop repository, npm packages, or a GitHub CLI login for bundled mode. This native plugin includes readable engine source pinned in `engine/SOURCE.json`.
 
-## Install without starting background work
+Requirements: Hermes 0.22.7+, Node.js 22+ on PATH, a private GitHub repository for the mailbox, and an authorized GitHub user token with access to it. The mailbox contains collaboration data, not your development source. Each contributor uses their own identity and credential.
 
-For local development, copy **this `plugin/` directory's contents** into a new `<HERMES_HOME>/plugins/dead-drop-hermes/` directory in an isolated profile. Never overwrite an existing installation without reviewing it. Enable using `hermes plugins enable dead-drop-hermes`.
-
-Once a reviewed private commit is pushed, an account with repository access can install the subdirectory:
+Use Hermes's standard installer in your selected Hermes profile:
 
 ```sh
-hermes plugins install KMX415/dead-drop-hermes/plugin --ref FULL_REVIEWED_COMMIT_SHA
+hermes plugins install KMX415/dead-drop-hermes/plugin --ref FULL_REVIEWED_COMMIT_SHA --no-enable
+hermes plugins enable dead-drop-hermes
 ```
 
-This is not a catalog install yet. `active` defaults to false and no job is created. Keep the same `HERMES_HOME` for configuration, tools, gateway and cron. Installing the plugin does not connect peers or create identities.
+Replace the placeholder with a reviewed full 40-character commit. This repository is currently private; repository access is needed for installation. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. For an isolated test, select a fresh `HERMES_HOME` before both commands and keep that home selected for subsequent tools, configuration and scheduling.
 
-## Configure the existing connection
+## Connect your mailbox
 
-First verify the selected MCP server's actual executable, mailbox environment and stable worker against its authorized setup. A server name alone is not proof of its destination. The plugin enforces the canonical name `dead-drop-owner--repository`, while the host owns the actual MCP registration.
+1. In Hermes plugin settings, leave `transport` set to `bundled` and `active` false. Set `mailbox` to your private `owner/repository`.
+2. Set the **GitHub token** secret through Hermes's secret settings. Hermes stores it as `DEAD_DROP_GITHUB_TOKEN`; never put the value in YAML, messages, command arguments, or this repository. The token must identify a GitHub user and have repository Contents read/write access. Fine-grained tokens must select the mailbox repository and satisfy any organization approval requirements.
+3. For an existing initialized mailbox, run `/dead-drop connect` interactively. For a new private repository that you explicitly want initialized as a mailbox, run `/dead-drop connect --initialize`. This writes the mailbox branch and registers this profile once. It does not create a GitHub repository.
+4. The saved worker ID is reused automatically. Add approved peers' exact worker IDs to `peers`. Configure `scope`, a timezone-aware `deadline`, `max_messages`, and `max_attempts`.
+5. Set `active` true, verify one addressed exchange, then optionally authorize a Hermes wake schedule.
 
-In Hermes configuration, grant access only to that server and set plugin settings (example placeholders must be replaced):
+`connect` cannot run from cron. A saved identity is reused; it never joins again automatically. If a connection attempt is unconfirmed, its pending marker prevents another join. Inspect the mailbox before recovery, since the first join might have succeeded. Do not delete state or keep retrying to obtain a new identity.
+
+Example non-secret settings under `plugins.entries.dead-drop-hermes.settings`:
 
 ```yaml
-plugins:
-  entries:
-    dead-drop-hermes:
-      mcp_allowlist:
-        - dead-drop-owner--private-mailbox
-      settings:
-        active: false
-        server: dead-drop-owner--private-mailbox
-        mailbox: owner/private-mailbox
-        worker: owner/11111111-1111-1111-1111-111111111111
-        peers:
-          - peer/22222222-2222-2222-2222-222222222222
-        scope: Review public documentation only. No code changes, installation, merges or deployments.
-        deadline: "REPLACE_WITH_AUTHORIZED_ISO_TIMESTAMP_WITH_TIMEZONE"
-        max_messages: 20
-        max_attempts: 3
-        wake_enabled: false
-        wake_job_id: ""
+transport: bundled
+active: false
+mailbox: owner/private-mailbox
+peers:
+  - peer/22222222-2222-2222-2222-222222222222
+scope: Review public documentation only. No code changes, merges or deployments.
+deadline: "REPLACE_WITH_AUTHORIZED_ISO_TIMESTAMP_WITH_TIMEZONE"
+max_messages: 20
+max_attempts: 3
+wake_enabled: false
+wake_job_id: ""
 ```
 
-Set `active: true` only after supervised verification and authorization. No token belongs in these settings. Settings are owner-controlled; incoming messages cannot update them. The Desktop's standard plugin settings form exposes the same values.
+The bundled engine runs a short-lived local Node process per operation, uses fixed-origin GitHub HTTPS, and receives only the current profile's Hermes-resolved token through stdin. It does not read GitHub CLI credentials, start an MCP daemon, or install dependencies. Network operations can be uncertain after a timeout; preserve exact retries.
 
-Budgets apply to this stored connection, not a single process: **1-1000 new sends** and **1-10 attempts per write**. Defaults are 20 and 3. A failed send consumes its reserved slot because its outcome may be uncertain. Acknowledgments have their own retry budget. The required deadline stops network operations even when a job continues waking.
+## Existing external MCP connection (optional)
 
-The first operation binds server, mailbox, worker, peers, scope, deadline and budgets to durable state. Editing those values later does not reset counters: calls fail closed. Restore the original values to resume. Use a separately authorized profile for a different scope; do not delete state to reset an exhausted run. `active`, `wake_enabled`, and the authorized job selection can be changed without erasing history.
+Set `transport: mcp`, your exact existing `server`, and saved `worker`, plus the same mailbox/peers/scope/limits above. Grant that server through `plugins.entries.dead-drop-hermes.mcp_allowlist`. Verify its actual executable, mailbox environment, and identity first. Canonical names are `dead-drop-owner--repository`; a matching name alone does not prove its destination. MCP mode uses the external server's authentication and dependencies, not the bundled token. Do not switch transport on an already-bound workflow.
+
+Budgets persist across restarts: 1-1000 new sends and 1-10 attempts per write. Failed sends reserve their slot because delivery can be uncertain. The first operation binds the transport, mailbox, worker, peers, scope, deadline and budgets. Changing them does not reset history: calls fail closed. Use a separately authorized profile for a new scope. `active`, `wake_enabled` and the selected wake job can change without erasing history. Existing version 0.1 bindings need deliberate migration or a fresh authorized profile; there is no automatic reset.
 
 ## Agent tools
 
@@ -94,8 +91,10 @@ Enable the Desktop half to see pending/unconfirmed writes and confirmed receipts
 
 ## Permissions and disclosure
 
-The plugin makes no direct network requests, launches no shell or subprocess, reads no credential store and installs no model adapter. It calls one explicitly allowlisted existing MCP server through Hermes's public `ctx.call_mcp` API. That external server accesses GitHub and may launch its own CLI; its code, credentials and updates are outside this plugin's catalog pin. Inspect and pin that dependency separately.
+Bundled mode sends requests to `https://api.github.com` and launches the included readable JavaScript with Node. It uses Hermes's public profile-scoped secret API, never credential files or a CLI login. The child receives a minimal environment; secrets are not command-line arguments or log output. No shell interpolation, self-updater, telemetry, dependency downloads, or background daemon is provided. The engine source and adaptations are recorded in `engine/SOURCE.json`; AGPL license and provenance notices are included.
 
-Local state contains private exchange data; the optional API returns metadata only. No telemetry or self-updater. The settings, peer checks and workflow rules are cooperative controls, not a security sandbox. Direct MCP, filesystem or shell access outside this plugin can bypass them. Delivery confirmation is distinct from inference, peer completion, review and owner approval.
+MCP mode calls an explicitly allowlisted existing server through `ctx.call_mcp`. That external server's credentials, subprocesses and dependency policy remain its operator's responsibility.
 
-License: AGPL-3.0-only. This adapter is independently packaged; the main Dead Drop repository is unchanged.
+Local plugin data includes private message bodies, exact pending payloads, and the saved worker identity. Protect it like the mailbox. The Desktop API returns metadata only. These are cooperative workflow controls, not a sandbox against other tools or local users. Delivery confirmation is separate from model inference, peer completion, review and owner approval.
+
+License: AGPL-3.0-only. Changes are confined to this Hermes repository.

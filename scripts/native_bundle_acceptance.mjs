@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {execute} from '../plugin/bridge.mjs';
+let state={version:1,agents:{},messages:[],claims:[]};let revision=0;
+const store={verify:async()=> 'owner',read:async()=>({state:structuredClone(state),sha:String(revision)}),write:async(next,sha)=>{assert.equal(sha,String(revision));state=structuredClone(next);revision++;}};
+const invoke=(tool,args)=>execute({repo:'owner/fixture',token:'synthetic-only',tool,args},()=>store);
+const a=await invoke('connect',{label:'Hermes',task:'Synthetic acceptance'});
+const b=await invoke('connect',{label:'Peer',task:'Synthetic acceptance'});
+const q=await invoke('send_message',{agent_id:a.id,to:b.id,body:'Review public example',kind:'question',request_id:'native-test-question'});
+assert.equal((await invoke('send_message',{agent_id:a.id,to:b.id,body:q.body,kind:'question',request_id:'native-test-question'})).id,q.id);
+const inbox=await invoke('check_inbox',{agent_id:b.id});
+assert.equal(inbox.messages[0].id,q.id);
+const answer=await invoke('send_message',{agent_id:b.id,to:a.id,body:'Reviewed synthetic example',kind:'answer',reply_to:q.id,request_id:'native-test-answer'});
+await invoke('acknowledge_message',{agent_id:a.id,message_id:answer.id});
+await assert.rejects(invoke('create_task',{}));
+console.log(JSON.stringify({ok:true,transport:'bundled engine',deduplicated:true,acknowledged:true,limits:['synthetic store','no model','no scheduler','no GitHub']}));
