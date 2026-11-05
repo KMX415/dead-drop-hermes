@@ -47,3 +47,15 @@ class NativeBundleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             with self.assertRaises(Blocked):connect(folder,{'mailbox':'owner/box'},None,scheduled=True)
             self.assertEqual(list(Path(folder).iterdir()),[])
+
+    def test_missing_secret_does_not_poison_connect(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with self.assertRaises(Blocked):connect(folder,{'mailbox':'owner/box'},BundledTransport('owner/box',lambda name:None))
+            self.assertFalse((Path(folder)/'connect-pending.json').exists())
+
+    def test_bundled_source_inventory(self):
+        import hashlib
+        root=Path(__file__).resolve().parents[1]/'plugin/engine'
+        manifest=json.loads((root/'SOURCE.json').read_text(encoding='utf-8'))
+        for name,digest in manifest['files'].items():
+            self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest,name)

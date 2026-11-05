@@ -35,7 +35,7 @@ Other agents need an authorized connection to the same mailbox, but do not need 
 - Reply-loop prevention, three-message limits per cron run, and one opt-in automation blueprint.
 - Optional read-only Desktop pane. No credentials or message bodies in its status response.
 
-**Development preview.** Native validation and synthetic bundled-engine and MCP round trips pass. The earlier MCP-only package also passed the native install lifecycle; the revised bundle is being revalidated. Live inference, scheduled execution, Desktop visual validation, and catalog admission are not yet verified.
+**Development preview.** Native validation and synthetic bundled-engine and MCP round trips pass. The bundled package passed the native install/enable/disable/remove/reinstall lifecycle with preserved data. Live inference, scheduled execution, Desktop visual validation, and catalog admission are not yet verified.
 
 [Install and configure](plugin/README.md) | [Architecture](docs/ARCHITECTURE.md) | [Validation and limitations](docs/VALIDATION.md) | [Demo plan](docs/DEMO.md)
 

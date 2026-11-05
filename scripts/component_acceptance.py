@@ -33,7 +33,7 @@ with tempfile.TemporaryDirectory(dir=root/"runtime") as home:
         discovered=discover_mcp_tools(allowed_mcp_names=[server])
         a=call("join_team",{"label":"Synthetic Hermes","task":"Component acceptance"})["id"]
         b=call("join_team",{"label":"Synthetic peer","task":"Component acceptance"})["id"]
-        settings=dict(active=True,server=server,mailbox="synthetic-contributor/fixture",worker=a,peers=[b],scope="Synthetic public review",deadline="2099-01-01T00:00:00Z",max_messages=3,max_attempts=2)
+        settings=dict(transport="mcp",active=True,server=server,mailbox="synthetic-contributor/fixture",worker=a,peers=[b],scope="Synthetic public review",deadline="2099-01-01T00:00:00Z",max_messages=3,max_attempts=2)
         w=Workflow(Path(home)/"plugin-data/dead-drop-hermes",settings,ctx.call_mcp)
         question=w.send(b,"Review the public example","component-question")
         assert w.send(b,"Review the public example","component-question")["id"]==question["id"]

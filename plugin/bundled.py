@@ -11,11 +11,7 @@ class BundledTransport:
         self.repo=repo
         self.secret_reader=secret_reader
 
-    def __call__(self, server, tool, args, timeout=30):
-        if server != 'dead-drop-'+self.repo.lower().replace('/','--'):
-            raise Blocked('Connection name does not match the mailbox')
-        if tool not in {'check_inbox','send_message','acknowledge_message','connect','initialize'}:
-            raise Blocked('Operation is not exposed by the bundled transport')
+    def preflight(self):
         if self.secret_reader is None:
             from agent.secret_scope import get_secret
             token=get_secret('DEAD_DROP_GITHUB_TOKEN')
@@ -25,6 +21,14 @@ class BundledTransport:
             raise Blocked('Set the GitHub token in Hermes plugin secret settings before connecting')
         node=shutil.which('node')
         if not node:raise Blocked('Node.js 22+ is required for the bundled engine')
+        return token,node
+
+    def __call__(self, server, tool, args, timeout=30):
+        if server != 'dead-drop-'+self.repo.lower().replace('/','--'):
+            raise Blocked('Connection name does not match the mailbox')
+        if tool not in {'check_inbox','send_message','acknowledge_message','connect','initialize'}:
+            raise Blocked('Operation is not exposed by the bundled transport')
+        token,node=self.preflight()
         # Do not inherit provider credentials, NODE_OPTIONS, or another profile's environment.
         allowed={'PATH','SYSTEMROOT','WINDIR','TEMP','TMP'}
         env={k:v for k,v in os.environ.items() if k.upper() in allowed}
@@ -52,6 +56,7 @@ def connect(directory, settings, transport, *, scheduled=False, initialize=False
         saved=json.loads(identity.read_text(encoding='utf-8'))
         if saved['repo']!=repo:raise Blocked('Saved identity belongs to another mailbox')
         return saved
+    if isinstance(transport,BundledTransport):transport.preflight()
     pending=directory/'connect-pending.json'
     try:
         with pending.open('x',encoding='utf-8') as f:
