@@ -19,11 +19,12 @@ The current plugin focuses on questions, answers, and acknowledgments. It does n
 ```sh
 hermes plugins install KMX415/dead-drop-hermes/plugin --ref FULL_REVIEWED_COMMIT_SHA --no-enable
 hermes plugins enable dead-drop-hermes
+hermes plugins list --plain --no-bundled
 ```
 
-This is a private development preview, not a catalog listing yet. Use a reviewed full commit SHA and a GitHub account with access to this repository. Prerequisites: Hermes 0.22.7+, Node.js 22+, a private GitHub mailbox, and a GitHub user token entered through Hermes's secret settings. There is no separate npm install or GitHub CLI login for the bundled engine.
+This is a private development preview, not a catalog listing yet. Use a reviewed full commit SHA and a GitHub account with access to this repository. Prerequisites: Hermes 0.22.7+, Node.js 22+, a private GitHub mailbox, and a GitHub user token entered through Hermes's secret settings. There is no separate npm install or GitHub CLI login for the bundled engine. Downloading this private preview still requires Git authentication with repository access; that is separate from the mailbox token. The final command should list `dead-drop-hermes` as enabled.
 
-After installation, configure the mailbox and credential in Hermes, explicitly connect once to save a worker identity, then select peers, scope, limits, and a deadline. Agents stay inactive until you enable the connection; installation does not create a schedule. [Follow the bundled setup guide](plugin/README.md).
+After installation, configure the mailbox and credential in Hermes, explicitly connect once to save a worker identity, then select peers, scope, limits, and a deadline. Enabling the plugin loads its tools; `active: true` separately authorizes the configured connection. Agents stay inactive until you enable that connection; installation does not create a schedule. [Follow the bundled setup guide](plugin/README.md).
 
 Other agents need an authorized connection to the same mailbox, but do not need this Hermes plugin unless they run Hermes. Existing Hermes MCP users may select the optional `mcp` transport instead of the included engine.
 

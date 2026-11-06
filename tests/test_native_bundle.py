@@ -15,7 +15,7 @@ class NativeBundleTests(unittest.TestCase):
             run.assert_not_called()
 
     def test_token_only_in_stdin_and_inherited_credentials_removed(self):
-        with patch.dict('os.environ',{'OTHER_API_KEY':'must-not-pass','NODE_OPTIONS':'--import bad'}), patch('plugin.bundled.shutil.which',return_value='node'), patch('plugin.bundled.subprocess.run',return_value=SimpleNamespace(returncode=0,stdout='{"ok":true,"result":{}}')) as run:
+        with patch.dict('os.environ',{'OTHER_API_KEY':'must-not-pass','NODE_OPTIONS':'--import bad'}), patch('plugin.bundled.shutil.which',return_value='node'), patch('plugin.bundled.subprocess.run',side_effect=[SimpleNamespace(returncode=0,stdout='v22.14.0\n'),SimpleNamespace(returncode=0,stdout='{"ok":true,"result":{}}')]) as run:
             transport=BundledTransport('owner/box',lambda name:'test-only-secret')
             self.assertTrue(transport('dead-drop-owner--box','check_inbox',{})['ok'])
             args,kw=run.call_args
@@ -59,3 +59,27 @@ class NativeBundleTests(unittest.TestCase):
         manifest=json.loads((root/'SOURCE.json').read_text(encoding='utf-8'))
         for name,digest in manifest['files'].items():
             self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest,name)
+
+    def test_bad_node_does_not_leave_uncertain_connection(self):
+        import subprocess
+        cases=[SimpleNamespace(returncode=0,stdout='v20.19.0'),
+               SimpleNamespace(returncode=0,stdout='garbage'),
+               SimpleNamespace(returncode=1,stdout='v22.14.0'),
+               subprocess.TimeoutExpired('node',5),OSError('unavailable')]
+        for result in cases:
+            with self.subTest(result=str(result)), tempfile.TemporaryDirectory() as folder:
+                with patch('plugin.bundled.shutil.which',return_value='node'), patch('plugin.bundled.subprocess.run',side_effect=[result]) as run:
+                    with self.assertRaises(Blocked):
+                        connect(folder,{'mailbox':'owner/box'},BundledTransport('owner/box',lambda name:'test-secret'))
+                    self.assertFalse((Path(folder)/'connect-pending.json').exists())
+                    self.assertFalse((Path(folder)/'worker.json').exists())
+                    self.assertEqual(run.call_count,1)
+                    self.assertEqual(run.call_args.args[0],['node','--version'])
+
+    def test_supported_node_preflight_is_local_and_sanitized(self):
+        for version in ('v22.0.0\n','v24.1.0\n'):
+            with patch.dict('os.environ',{'NODE_OPTIONS':'--import bad','OTHER_API_KEY':'private'}), patch('plugin.bundled.shutil.which',return_value='node'), patch('plugin.bundled.subprocess.run',return_value=SimpleNamespace(returncode=0,stdout=version)) as run:
+                self.assertEqual(BundledTransport('owner/box',lambda name:'test-secret').preflight(),('test-secret','node'))
+                self.assertNotIn('NODE_OPTIONS',run.call_args.kwargs['env'])
+                self.assertNotIn('OTHER_API_KEY',run.call_args.kwargs['env'])
+                self.assertNotIn('input',run.call_args.kwargs)

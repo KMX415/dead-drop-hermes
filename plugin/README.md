@@ -15,9 +15,25 @@ Use Hermes's standard installer in your selected Hermes profile:
 ```sh
 hermes plugins install KMX415/dead-drop-hermes/plugin --ref FULL_REVIEWED_COMMIT_SHA --no-enable
 hermes plugins enable dead-drop-hermes
+hermes plugins list --plain --no-bundled
 ```
 
 Replace the placeholder with a reviewed full 40-character commit. This repository is currently private; repository access is needed for installation. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. For an isolated test, select a fresh `HERMES_HOME` before both commands and keep that home selected for subsequent tools, configuration and scheduling.
+
+### Check the installation before connecting
+
+`hermes plugins list --plain --no-bundled` should show `dead-drop-hermes` enabled. Run `node --version` in the environment that launches Hermes; it must report v22 or newer. After installing or updating Node, restart Hermes so it sees the new PATH. Connection setup checks Node before recording a pending registration.
+
+The install source is private. If cloning reports repository not found or authentication failed, verify that your Git identity can read `KMX415/dead-drop-hermes`. The installer uses Git authentication. The bundled mailbox transport instead uses the Hermes-managed token below; it does not reuse Git or GitHub CLI credentials. Installing the plugin does not create a mailbox repository.
+
+For an isolated PowerShell trial, choose a new, unused directory before running the install commands:
+
+```powershell
+$env:HERMES_HOME = Join-Path $env:TEMP ('dead-drop-trial-' + [guid]::NewGuid())
+$env:HERMES_MANAGED_DIR = Join-Path $env:HERMES_HOME 'managed'
+```
+
+Keep this terminal and profile selected for setup. Do not copy your normal profile or credentials into it. The reviewed SHA is a required placeholder, not a literal install argument; obtain it from the commit you intend to install.
 
 ## Connect your mailbox
 
@@ -26,6 +42,10 @@ Replace the placeholder with a reviewed full 40-character commit. This repositor
 3. For an existing initialized mailbox, run `/dead-drop connect` interactively. For a new private repository that you explicitly want initialized as a mailbox, run `/dead-drop connect --initialize`. This writes the mailbox branch and registers this profile once. It does not create a GitHub repository.
 4. The saved worker ID is reused automatically. Add approved peers' exact worker IDs to `peers`. Configure `scope`, a timezone-aware `deadline`, `max_messages`, and `max_attempts`.
 5. Set `active` true, verify one addressed exchange, then optionally authorize a Hermes wake schedule.
+
+Three separate switches matter: enabling the plugin loads its tools, `active: true` permits the configured exchange, and an explicitly authorized wake schedule enables unattended checks. No Desktop pane needs to be open. Without a schedule, use the tools during an interactive agent session.
+
+A fresh `/dead-drop` status may say `not_connected` until local workflow state exists. This is not proof that installation failed or that a remote mailbox is unreachable. Follow the connection steps and verify an actual exchange.
 
 `connect` cannot run from cron. A saved identity is reused; it never joins again automatically. If a connection attempt is unconfirmed, its pending marker prevents another join. Inspect the mailbox before recovery, since the first join might have succeeded. Do not delete state or keep retrying to obtain a new identity.
 

@@ -1,6 +1,7 @@
 """Native plugin transport; secrets come only from Hermes's public profile scope."""
 import json
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -21,6 +22,17 @@ class BundledTransport:
             raise Blocked('Set the GitHub token in Hermes plugin secret settings before connecting')
         node=shutil.which('node')
         if not node:raise Blocked('Node.js 22+ is required for the bundled engine')
+        # Validate locally before connect records a potentially uncertain write.
+        # Keep injected Node flags and unrelated credentials out of this probe too.
+        env={k:v for k,v in os.environ.items() if k.upper() in {'PATH','SYSTEMROOT','WINDIR','TEMP','TMP'}}
+        try:
+            version=subprocess.run([node,'--version'],capture_output=True,text=True,
+                timeout=5,env=env,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+            match=re.fullmatch(r'v(\d+)\.\d+\.\d+\s*',version.stdout)
+            if version.returncode or not match or int(match[1])<22:
+                raise Blocked('Node.js 22+ is required; upgrade Node on PATH and restart Hermes before connecting')
+        except (OSError,subprocess.TimeoutExpired):
+            raise Blocked('Could not verify Node.js; check Node on PATH and restart Hermes before connecting') from None
         return token,node
 
     def __call__(self, server, tool, args, timeout=30):
