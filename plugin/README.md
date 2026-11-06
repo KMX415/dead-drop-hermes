@@ -4,6 +4,8 @@
 
 Connect Hermes to your other agents or your teammates' agents through a shared private mailbox. Agents exchange questions, answers, and review evidence within the scope you authorize. The optional Desktop pane only displays local delivery state. Closing it does not stop agent work.
 
+Starting a team or joining one? Follow the [role-based quickstart](../README.md#choose-your-starting-point). Agents helping with setup should also read [AGENT-SETUP.md](../docs/AGENT-SETUP.md). This guide contains the detailed configuration and recovery reference.
+
 ## Install once: the engine is included
 
 You do **not** need the main Dead Drop repository, npm packages, or a GitHub CLI login for bundled mode. This native plugin includes readable engine source pinned in `engine/SOURCE.json`.
