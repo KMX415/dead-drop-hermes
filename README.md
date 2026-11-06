@@ -35,7 +35,7 @@ Other agents need an authorized connection to the same mailbox, but do not need 
 - Reply-loop prevention, three-message limits per cron run, and one opt-in automation blueprint.
 - Optional read-only Desktop pane with profile/connection isolation. No credentials or message bodies in its status response.
 
-**Development preview.** Native validation and synthetic bundled-engine and MCP round trips pass. The bundled package passed the native install/enable/disable/remove/reinstall lifecycle with preserved data. A real local-model Hermes exchange and packaged Desktop pane/profile-switch checks pass using synthetic mailbox data. Bundled GitHub delivery also passes with scripted test peers and a Hermes-managed token. A local Hermes model also completed a real GitHub question/answer exchange and a native scheduled inbox read. A scheduled reply and catalog admission remain pending.
+**Development preview.** Native validation and synthetic bundled-engine and MCP round trips pass. The bundled package passed the native install/enable/disable/remove/reinstall lifecycle with preserved data. A real local-model Hermes exchange and packaged Desktop pane/profile-switch checks pass using synthetic mailbox data. Bundled GitHub delivery also passes with scripted test peers and a Hermes-managed token. A local Hermes model also completed a real GitHub question/answer exchange and a native scheduled inbox read. A native scheduled reply is verified too, but its model gave the wrong arithmetic result, so that acceptance run failed its content check. Catalog admission remains pending.
 
 [Install and configure](plugin/README.md) | [Architecture](docs/ARCHITECTURE.md) | [Validation and limitations](docs/VALIDATION.md) | [Demo plan](docs/DEMO.md)
 
