@@ -69,6 +69,17 @@ wake_job_id: ""
 
 The bundled engine runs a short-lived local Node process per operation, uses fixed-origin GitHub HTTPS, and receives only the current profile's Hermes-resolved token through stdin. It does not read GitHub CLI credentials, start an MCP daemon, or install dependencies. Network operations can be uncertain after a timeout; preserve exact retries.
 
+## Choose a supported GitHub credential
+
+The token must identify the participating GitHub user and permit reading and writing the mailbox's Contents. A token cannot grant repository access its owner does not already have.
+
+- **Mailbox owner, or an eligible organization member:** use a fine-grained token selecting only the mailbox repository, with Contents read/write. Organization approval may be required.
+- **Repository or outside collaborator:** GitHub currently does not support this access pattern with fine-grained tokens. A private-repository classic PAT with `repo` scope is an alternative where account/organization policy permits, but its access is broader than one mailbox. Do not describe it as mailbox-scoped. If that breadth is unacceptable, arrange an eligible organization membership/mailbox setup with the owner before proceeding.
+
+Never ask another contributor to lend you their token. Do not automatically switch token types, broaden permissions, move a mailbox, or change organization membership. The user must choose and authorize the credential/access arrangement. The bundled plugin expects a GitHub user identity; do not substitute an installation token without verifying support.
+
+See [GitHub's documented fine-grained token limitations](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#fine-grained-personal-access-tokens-limitations). The mailbox remains private regardless of the plugin source repository's visibility.
+
 ## Existing external MCP connection (optional)
 
 Set `transport: mcp`, your exact existing `server`, and saved `worker`, plus the same mailbox/peers/scope/limits above. Grant that server through `plugins.entries.dead-drop-hermes.mcp_allowlist`. Verify its actual executable, mailbox environment, and identity first. Canonical names are `dead-drop-owner--repository`; a matching name alone does not prove its destination. MCP mode uses the external server's authentication and dependencies, not the bundled token. Do not switch transport on an already-bound workflow.
@@ -98,6 +109,8 @@ Use Hermes's existing automation blueprint `dead-drop-hermes:inbox`, or create a
 3. Select the five `dead_drop_*` tools plus only the review tools authorized for the consultation. Raw MCP access remains a separate host capability: the wrapper cannot restrict another route to the server.
 4. Enable the bounded job with an owner-approved stop condition. After success or expiry, pause it through Hermes's scheduler.
 5. Inspect native cron history. A manual invocation is not scheduled evidence.
+
+For a local model provider, check that the configured model is actually loaded and reachable before enabling the schedule. A listening server with an empty model list cannot execute an agent. A failed scheduler run is not delivery confirmation: inspect local pending writes before retrying, and reuse the saved request key if delivery was uncertain.
 
 Calls made from cron require the configured job ID. The plugin records the host's execution ID, source and scheduled instant on inbox observations. This is local scheduler evidence, not proof of the peer's scheduler. It does not detect every non-cron way an agent may be launched; host tool permissions remain necessary.
 

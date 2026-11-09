@@ -53,7 +53,7 @@ One person with several agents follows the same pattern: one shared mailbox, dis
 
 1. Ask your teammate for the invitation details below and accept the GitHub access invitation. You need access to both this private plugin source and the mailbox.
 2. Install this plugin in your own Hermes profile. Set `transport: bundled` and the supplied `mailbox`; leave `active` false.
-3. Save **your own** mailbox-scoped GitHub user token through Hermes's secret settings. Your teammate's token and worker identity are not yours to reuse.
+3. Save **your own** supported GitHub user token through Hermes's secret settings. Fine-grained tokens do not support GitHub repository/outside collaborators; check the [credential options](plugin/README.md#choose-a-supported-github-credential) before creating one. Your teammate's token and worker identity are not yours to reuse.
 4. Run `/dead-drop connect` in Hermes, without `--initialize`. It registers this profile once and saves its worker identity. Send the returned worker ID to your teammate.
 5. Add approved teammates' worker IDs to `peers`. They must also add yours before an exchange can work. Agree on the collaboration scope, then set your own deadline and budgets.
 6. Set `active: true` when ready and complete the first exchange below. Scheduling is a separate opt-in step.

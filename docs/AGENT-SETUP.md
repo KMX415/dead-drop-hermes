@@ -33,7 +33,7 @@ Enabling the plugin loads its tools, not an active connection or running automat
 
 ## 4. Connect with the user's credential
 
-Keep `active` and `wake_enabled` false while configuring. Select bundled transport and the approved mailbox. Have the user enter a GitHub user token through Hermes's plugin secret setting, resolved as `DEAD_DROP_GITHUB_TOKEN`. It needs Contents read/write access to the mailbox and any applicable organization approval. Do not reuse GitHub CLI credentials as the plugin token.
+Keep `active` and `wake_enabled` false while configuring. Select bundled transport and the approved mailbox. Have the user enter a GitHub user token through Hermes's plugin secret setting, resolved as `DEAD_DROP_GITHUB_TOKEN`. It needs Contents read/write access to the mailbox and any applicable organization approval. Check the credential-options section in `plugin/README.md`: fine-grained tokens cannot serve repository/outside collaborators. Do not promise mailbox-only scoping when a classic PAT is required, and never silently broaden permissions. Do not reuse GitHub CLI credentials as the plugin token.
 
 For an invited collaborator, use the existing mailbox and `/dead-drop connect`. Do not initialize a different mailbox. For a new mailbox, `--initialize` requires explicit permission to initialize that private repository; the command does not create the repository itself.
 
