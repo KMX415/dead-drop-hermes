@@ -20,22 +20,13 @@ hermes plugins enable dead-drop-hermes
 hermes plugins list --plain --no-bundled
 ```
 
-Replace the placeholder with a reviewed full 40-character commit. This repository is currently private; repository access is needed for installation. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. For an isolated test, select a fresh `HERMES_HOME` before both commands and keep that home selected for subsequent tools, configuration and scheduling.
+Replace the placeholder with a reviewed full 40-character commit. This repository is currently private; repository access is needed for installation. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. Use the same Hermes profile for installation, configuration, and scheduling.
 
 ### Check the installation before connecting
 
 `hermes plugins list --plain --no-bundled` should show `dead-drop-hermes` enabled. Run `node --version` in the environment that launches Hermes; it must report v22 or newer. After installing or updating Node, restart Hermes so it sees the new PATH. Connection setup checks Node before recording a pending registration.
 
 The install source is private. If cloning reports repository not found or authentication failed, verify that your Git identity can read `KMX415/dead-drop-hermes`. The installer uses Git authentication. The bundled mailbox transport instead uses the Hermes-managed token below; it does not reuse Git or GitHub CLI credentials. Installing the plugin does not create a mailbox repository.
-
-For an isolated PowerShell trial, choose a new, unused directory before running the install commands:
-
-```powershell
-$env:HERMES_HOME = Join-Path $env:TEMP ('dead-drop-trial-' + [guid]::NewGuid())
-$env:HERMES_MANAGED_DIR = Join-Path $env:HERMES_HOME 'managed'
-```
-
-Keep this terminal and profile selected for setup. Do not copy your normal profile or credentials into it. The reviewed SHA is a required placeholder, not a literal install argument; obtain it from the commit you intend to install.
 
 ## Connect your mailbox
 
@@ -122,7 +113,7 @@ State lives under `<HERMES_HOME>/plugin-data/dead-drop-hermes/exchanges.sqlite3`
 
 ## Optional Desktop view
 
-Enable the Desktop half to see pending/unconfirmed writes and confirmed receipts. The panel reads local status metadata on opening, profile/connection changes, and Refresh; it does not send messages, acknowledge work, start inference, or run a scheduler. Closing it has no effect on agent work. Switching profiles or connections clears previous evidence; late responses cannot repopulate the new view. A failed refresh labels retained evidence as stale. The packaged Desktop pane passed isolated rendering and profile-switch checks with synthetic records. See [validation](../docs/VALIDATION.md) for the evidence boundaries.
+Enable the Desktop half to see pending/unconfirmed writes and confirmed receipts. The panel reads local status metadata on opening, profile/connection changes, and Refresh; it does not send messages, acknowledge work, start inference, or run a scheduler. Closing it has no effect on agent work. Switching profiles or connections clears previous evidence; late responses cannot repopulate the new view. A failed refresh labels retained evidence as stale.
 
 ## Permissions and disclosure
 
@@ -132,4 +123,4 @@ MCP mode calls an explicitly allowlisted existing server through `ctx.call_mcp`.
 
 Local plugin data includes private message bodies, exact pending payloads, and the saved worker identity. Protect it like the mailbox. The Desktop API returns metadata only. These are cooperative workflow controls, not a sandbox against other tools or local users. Delivery confirmation is separate from model inference, peer completion, review and owner approval.
 
-License: AGPL-3.0-only. Changes are confined to this Hermes repository.
+License: AGPL-3.0-only.

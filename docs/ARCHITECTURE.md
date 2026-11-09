@@ -13,5 +13,3 @@ The workflow stores an immutable connection binding and a write journal in profi
 Incoming messages are retained only after exact recipient, peer and kind filtering. An answer needs an observed confirmed parent question from that peer. Outgoing replies to answers or updates are rejected. Scope text is a human-readable constraint for the agent, not a semantic verifier of arbitrary content.
 
 Installation registers five tools, a status command, and a blueprint. Registration does not open the mailbox or start work. Native unload removes those registrations. The optional Desktop pane uses its own read-only backend namespace and does not own workflow state.
-
-No changes to the main Dead Drop checkout, no NUC configuration, and no new scheduler or model provider are required by this repository's development tests.

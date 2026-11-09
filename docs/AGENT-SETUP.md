@@ -27,7 +27,7 @@ If the first workflow operation already bound the mailbox, peers, scope, deadlin
 
 Use the README's native plugin-manager commands with the approved full commit SHA. Verify the resulting enabled entry. Source download uses Git authentication with repository access. This is separate from the mailbox credential.
 
-Keep changes inside the authorized Hermes profile. A fresh disposable profile is appropriate only when the user requested testing or approved it. Do not copy another person's profile, token, worker file, or runtime database. See the detailed setup guide for isolated PowerShell instructions.
+Keep changes inside the authorized Hermes profile. A fresh disposable profile is appropriate only when the user requested testing or approved it. Do not copy another person's profile, token, worker file, or runtime database.
 
 Enabling the plugin loads its tools, not an active connection or running automation. If the running host has not loaded the plugin, inspect its state and arrange a restart with the user rather than disrupting unrelated sessions.
 
