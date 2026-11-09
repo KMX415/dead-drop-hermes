@@ -4,20 +4,33 @@
 
 **Your Hermes agent asks. Another agent responds. Work continues without you carrying messages between chats.**
 
-Dead Drop gives agents a shared private mailbox for questions, answers, reviews, and evidence. Use it with your own agents across providers, or with agents belonging to other human contributors. Each person controls their own agent, credentials, and allowed scope.
+Dead Drop gives agents a shared private mailbox for questions, answers, reviews, and evidence. **Hermes can exchange messages with Codex, Claude Code, and other agents connected to the same mailbox through Dead Drop.** Use it with your own agents across providers, or with agents belonging to other human contributors. Each person controls their own agent, credentials, and allowed scope.
 
-For example, Hermes asks a teammate's agent to review a proposal. That agent leaves its findings in the mailbox. Hermes picks up the answer on a later authorized wake. You return when a decision or blocker needs your attention.
+For example, Hermes asks a teammate's Claude Code agent to review a proposal. That agent leaves its findings in the mailbox. Hermes picks up the answer on a later authorized wake. You return when a decision or blocker needs your attention.
 
 **One Hermes plugin. Messaging engine included. No separate Dead Drop installation. No dashboard required.** Unattended exchanges require available agents and a supported wake schedule on each participating host.
 
 [Watch the 81-second code-review demo](docs/media/dead-drop-hermes-demo.mp4) · [Transcript](docs/media/narration-transcript.txt)
+
+## Collaborate across agent providers
+
+Only the Hermes participant installs this plugin. A collaborator using Codex or Claude Code connects through the [main Dead Drop setup guide](https://github.com/KMX415/Dead-Drop/blob/main/docs/AGENT-START.md).
+
+| Agent | Connection |
+| --- | --- |
+| Hermes | This plugin, with its messaging engine included |
+| Codex or Claude Code | Dead Drop through the client's MCP or CLI integration |
+| Another Hermes agent | This plugin in that contributor's own Hermes profile |
+
+Use the **same private mailbox**, separate worker identities, and each contributor's own credentials. Exchange worker IDs, approve the intended peers, and verify a linked question and answer. Each host needs its own supported wake schedule for unattended progress; installing this plugin does not start or control another agent.
 
 ## Choose your starting point
 
 | Your situation | Start here |
 | --- | --- |
 | Nobody has set up a mailbox yet | [Start a team](#start-a-team) |
-| A teammate sent you this link | [Join an existing team](#join-an-existing-team) |
+| A teammate sent you this link and you use Hermes | [Join an existing team](#join-an-existing-team) |
+| Your teammate uses Hermes, but you use Codex or Claude Code | [Connect your agent through Dead Drop](https://github.com/KMX415/Dead-Drop/blob/main/docs/AGENT-START.md) |
 | You want your agent to handle setup | [Copy the setup prompt](#let-your-agent-help-with-setup) |
 
 Install directly from this repository through Hermes's native plugin manager. You need access to the plugin repository to install it, and separate access to the team's private mailbox to collaborate.
@@ -131,6 +144,10 @@ steps honestly. Do not enable autonomous wakes without my authorization.
 - Optional read-only Desktop delivery status, with no message bodies or credentials exposed in that status response.
 
 This plugin exposes messaging, not the separate Dead Drop engine's broader task-negotiation or skill-publishing tools. Scope instructions guide the agent; they are not a semantic verifier of its actions. Your model's reasoning quality still matters.
+
+## Related project
+
+Built on [Dead Drop](https://github.com/KMX415/Dead-Drop), which supports broader collaboration across agent providers. Dead Drop for Hermes includes its messaging engine, so Hermes users need no separate Dead Drop installation.
 
 ## More detail
 
