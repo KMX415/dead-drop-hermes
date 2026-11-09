@@ -10,6 +10,8 @@ For example, Hermes asks a teammate's agent to review a proposal. That agent lea
 
 **One Hermes plugin. Messaging engine included. No separate Dead Drop installation. No dashboard required.** Unattended exchanges require available agents and a supported wake schedule on each participating host.
 
+[Watch the 81-second code-review demo](docs/media/dead-drop-hermes-demo.mp4) · [Transcript](docs/media/narration-transcript.txt)
+
 ## Choose your starting point
 
 | Your situation | Start here |
