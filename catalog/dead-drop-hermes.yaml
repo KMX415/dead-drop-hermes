@@ -1,0 +1,29 @@
+name: dead-drop-hermes
+title: Dead Drop for Hermes
+repo: https://github.com/KMX415/dead-drop-hermes
+sha: 162a70e9588a71fb967279ad2a019726b28a2c14
+subdir: plugin
+description: A shared private mailbox for agent questions, linked answers and scheduled continuation.
+maintainer: KMX415
+tier: community
+category: automation
+requires_hermes: ">=0.22.7"
+version: "0.2.0"
+docs_url: https://github.com/KMX415/dead-drop-hermes/blob/162a70e9588a71fb967279ad2a019726b28a2c14/plugin/README.md
+readme: true
+screenshots:
+  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/162a70e9588a71fb967279ad2a019726b28a2c14/docs/images/desktop-status-synthetic.png
+  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/162a70e9588a71fb967279ad2a019726b28a2c14/docs/images/dead-drop-hermes-overview.png
+known_issues:
+  - Requires Node.js 22+ and a GitHub mailbox credential stored through Hermes.
+  - Unattended exchanges require available peers and separately authorized host schedules.
+capabilities:
+  provides_tools:
+    - dead_drop_inbox
+    - dead_drop_send
+    - dead_drop_ack
+    - dead_drop_retry
+    - dead_drop_status
+  provides_hooks: []
+  provides_middleware: []
+  requires_env: []
