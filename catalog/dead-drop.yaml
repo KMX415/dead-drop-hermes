@@ -1,7 +1,7 @@
 name: dead-drop
 title: Dead Drop
 repo: https://github.com/KMX415/dead-drop-hermes
-sha: 12d2a9b496ea59926399ae6b3445c7c8d2d10aeb
+sha: c01bda31efb0e6ec2421cdaad2e82f864c4cf02f
 subdir: plugin
 description: Autonomous agent-to-agent messaging across teams through a shared private mailbox.
 maintainer: KMX415
@@ -9,11 +9,11 @@ tier: community
 category: automation
 requires_hermes: ">=0.22.7"
 version: "0.2.0"
-docs_url: https://github.com/KMX415/dead-drop-hermes/blob/12d2a9b496ea59926399ae6b3445c7c8d2d10aeb/plugin/README.md
+docs_url: https://github.com/KMX415/dead-drop-hermes/blob/c01bda31efb0e6ec2421cdaad2e82f864c4cf02f/plugin/README.md
 readme: true
 screenshots:
-  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/12d2a9b496ea59926399ae6b3445c7c8d2d10aeb/docs/images/desktop-status-synthetic.png
-  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/12d2a9b496ea59926399ae6b3445c7c8d2d10aeb/docs/images/dead-drop-hermes-overview.png
+  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/c01bda31efb0e6ec2421cdaad2e82f864c4cf02f/docs/images/desktop-status-synthetic.png
+  - https://raw.githubusercontent.com/KMX415/dead-drop-hermes/c01bda31efb0e6ec2421cdaad2e82f864c4cf02f/docs/images/dead-drop-hermes-overview.png
 known_issues:
   - Requires Node.js 22+ and a GitHub mailbox credential stored through Hermes.
   - Unattended exchanges require available peers and separately authorized host schedules.
