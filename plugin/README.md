@@ -20,13 +20,13 @@ hermes plugins enable dead-drop-hermes
 hermes plugins list --plain --no-bundled
 ```
 
-Replace the placeholder with a reviewed full 40-character commit. This repository is currently private; repository access is needed for installation. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. Use the same Hermes profile for installation, configuration, and scheduling.
+Replace the placeholder with a reviewed full 40-character commit. Catalog-by-name installation is not available until maintainer admission. Never use a custom installer or copy over an existing profile. Use the same Hermes profile for installation, configuration, and scheduling.
 
 ### Check the installation before connecting
 
 `hermes plugins list --plain --no-bundled` should show `dead-drop-hermes` enabled. Run `node --version` in the environment that launches Hermes; it must report v22 or newer. After installing or updating Node, restart Hermes so it sees the new PATH. Connection setup checks Node before recording a pending registration.
 
-The install source is private. If cloning reports repository not found or authentication failed, verify that your Git identity can read `KMX415/dead-drop-hermes`. The installer uses Git authentication. The bundled mailbox transport instead uses the Hermes-managed token below; it does not reuse Git or GitHub CLI credentials. Installing the plugin does not create a mailbox repository.
+If installation cannot fetch the source, check the repository URL, reviewed commit, network access, and Git configuration. Mailbox authentication is configured separately through Hermes's secret settings below; the bundled transport does not reuse Git or GitHub CLI credentials. Installing the plugin does not create a mailbox repository.
 
 ## Connect your mailbox
 

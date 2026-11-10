@@ -6,7 +6,7 @@ These instructions help an agent onboard a human to Dead Drop. They do not grant
 
 Read the root README and `plugin/README.md`. Determine whether the user is starting a team or joining an existing mailbox. Identify the exact Hermes profile and machine. Ask for missing decisions in one concise group where possible:
 
-- Reviewed plugin commit and access to the private source repository.
+- Plugin source URL and reviewed full commit SHA.
 - Existing mailbox or explicit permission to create and initialize a new one.
 - Approved peers, consultation scope, deadline, total send budget, and attempts per write.
 - Whether one harmless verification exchange is authorized.

@@ -37,7 +37,7 @@ Use the **same private mailbox**, separate worker identities, and each contribut
 | Your teammate uses Hermes, but you use Codex, Claude Code, or Cursor | [Connect your agent through Dead Drop](https://github.com/KMX415/Dead-Drop/blob/main/docs/AGENT-START.md) |
 | You want your agent to handle setup | [Copy the setup prompt](#let-your-agent-help-with-setup) |
 
-Install directly from this repository through Hermes's native plugin manager. You need access to the plugin repository to install it, and separate access to the team's private mailbox to collaborate.
+Install directly from this repository through Hermes's native plugin manager. Collaboration requires access to the team's private mailbox, which is separate from the plugin source.
 
 ## Install in Hermes
 
@@ -51,7 +51,7 @@ hermes plugins enable dead-drop-hermes
 hermes plugins list --plain --no-bundled
 ```
 
-The list should show `dead-drop-hermes` enabled. These are Hermes's native plugin-manager commands. Private source installation uses your Git authentication; mailbox access uses a separate token stored by Hermes. If you install or update Node, restart Hermes so it sees the new PATH.
+The list should show `dead-drop-hermes` enabled. These are Hermes's native plugin-manager commands. Mailbox access uses your own token stored by Hermes, configured separately from plugin installation. If you install or update Node, restart Hermes so it sees the new PATH.
 
 **Enabled does not mean autonomous.** Installation loads tools. You separately configure and activate the connection, then authorize a schedule if wanted.
 
@@ -70,7 +70,7 @@ One person with several agents follows the same pattern: one shared mailbox, dis
 
 **Use the team's existing mailbox. Do not create a second mailbox or copy your teammate's Hermes profile.**
 
-1. Ask your teammate for the invitation details below and accept the GitHub access invitation. You need access to both this private plugin source and the mailbox.
+1. Ask your teammate for the invitation details below and accept the GitHub invitation to the team's private mailbox.
 2. Install this plugin in your own Hermes profile. Set `transport: bundled` and the supplied `mailbox`; leave `active` false.
 3. Save **your own** supported GitHub user token through Hermes's secret settings. Fine-grained tokens do not support GitHub repository/outside collaborators; check the [credential options](plugin/README.md#choose-a-supported-github-credential) before creating one. Your teammate's token and worker identity are not yours to reuse.
 4. Run `/dead-drop connect` in Hermes, without `--initialize`. It registers this profile once and saves its worker identity. Send the returned worker ID to your teammate.
@@ -90,8 +90,8 @@ My agent's worker ID: <exact worker ID returned by connect>
 Proposed collaboration: <what our agents may discuss or review>
 Proposed stop condition: <deadline and completion condition>
 
-I'll grant your GitHub account access to the mailbox and arrange access
-to the private plugin repository. Install in your own Hermes profile,
+I'll grant your GitHub account access to the private mailbox.
+Install the plugin from the source link above in your own Hermes profile,
 use your own mailbox credential, and connect without --initialize.
 Send me your worker ID so we can approve each other as peers.
 Choose and authorize your own local limits and schedule.
