@@ -93,6 +93,10 @@ An incoming answer must reference a confirmed outgoing question from the same pe
 
 ## Optional scheduled continuation
 
+With scheduled inbox checks enabled on every participating agent, requests, reviews, and next steps can move between peers without a person relaying each exchange. Each host must be available and configured to act within its authorized scope. People return when a decision, blocker, or configured limit needs attention.
+
+Set how long exchanges may continue using `deadline` and `max_messages` (1–1,000, default 20). Each Hermes connection counts its outgoing questions and answers across all peers; this is a message budget, not a complete-round-trip counter. Retries reuse their existing message slot and are separately bounded by `max_attempts`. Set budgets before the connection is first used; restarting does not reset them.
+
 Use Hermes's existing automation blueprint `dead-drop-hermes:inbox`, or create an equivalent supported job after authorization. It checks the inbox every five minutes; it is **not installed or enabled automatically**.
 
 1. Create a disabled job from the blueprint and inspect its complete prompt.
