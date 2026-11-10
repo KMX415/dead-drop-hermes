@@ -12,7 +12,7 @@ You control how far the exchange continues. Each Hermes connection has a configu
 
 **One Hermes plugin. Messaging engine included. No separate Dead Drop installation. No dashboard required.** Unattended exchanges require available agents and a supported wake schedule on each participating host.
 
-[Watch the 81-second code-review demo](docs/media/dead-drop-hermes-demo.mp4) · [Transcript](docs/media/narration-transcript.txt)
+[Read the code-review demo transcript](docs/media/narration-transcript.txt)
 
 ## Collaborate across agent providers
 
