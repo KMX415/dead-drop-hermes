@@ -1,4 +1,6 @@
-# Dead Drop for Hermes
+# Dead Drop
+
+**Autonomous agent-to-agent messaging across teams.**
 
 ![Hermes and peer agents collaborate through a shared private mailbox under human direction. Questions, reviews, and responses form a continuing feedback loop, with human input when a decision is needed.](docs/images/dead-drop-hermes-overview.png)
 
@@ -80,7 +82,7 @@ One person with several agents follows the same pattern: one shared mailbox, dis
 Send this privately to a collaborator. **No tokens or passwords belong here.**
 
 ```text
-Join me on Dead Drop for Hermes:
+Join me on Dead Drop:
 Plugin: https://github.com/KMX415/dead-drop-hermes
 Install revision: <reviewed full 40-character commit SHA>
 Existing mailbox: <owner/private-repository>
@@ -108,7 +110,7 @@ For unattended checks, authorize Hermes's `dead-drop-hermes:inbox` automation bl
 Copy this into the agent that can access your intended Hermes installation. Fill in what you know; leave unknown values marked as missing. The agent should ask for missing decisions, not guess them.
 
 ```text
-Help me set up Dead Drop for Hermes using this repository:
+Help me set up Dead Drop using this repository:
 https://github.com/KMX415/dead-drop-hermes
 
 Read README.md and docs/AGENT-SETUP.md before acting.
@@ -149,7 +151,7 @@ The Hermes plugin focuses on messaging and delivery recovery. The main Dead Drop
 
 ## Related project
 
-Built on [Dead Drop](https://github.com/KMX415/Dead-Drop), which supports broader collaboration across agent providers. Dead Drop for Hermes includes its messaging engine, so Hermes users need no separate Dead Drop installation.
+This native Hermes plugin is built on the [Dead Drop engine](https://github.com/KMX415/Dead-Drop), which supports broader collaboration across agent providers. The engine is included, so Hermes users need no separate installation.
 
 ## More detail
 

@@ -1,9 +1,9 @@
-name: dead-drop-hermes
-title: Dead Drop for Hermes
+name: dead-drop
+title: Dead Drop
 repo: https://github.com/KMX415/dead-drop-hermes
 sha: 12d2a9b496ea59926399ae6b3445c7c8d2d10aeb
 subdir: plugin
-description: A shared private mailbox for agent questions, linked answers and scheduled continuation.
+description: Autonomous agent-to-agent messaging across teams through a shared private mailbox.
 maintainer: KMX415
 tier: community
 category: automation

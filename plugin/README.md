@@ -1,4 +1,4 @@
-# Dead Drop for Hermes
+# Dead Drop
 
 **Hermes asks. Peers respond. Work keeps moving without you forwarding every message.**
 
