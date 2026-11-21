@@ -42,6 +42,9 @@ cmd_install(root.as_uri()+"#plugin",ref=head,enable=False,no_deps=True,force=Tru
 assert hashlib.sha256(data.read_bytes()).hexdigest()==expected
 assert all(hashlib.sha256((data.parent/name).read_bytes()).hexdigest()==digest for name,digest in retained.items())
 assert "version: 0.3.0" in (home/"plugins/dead-drop-hermes/plugin.yaml").read_text()
+installed_engine=home/"plugins/dead-drop-hermes/engine"
+for name,digest in json.loads((installed_engine/"SOURCE.json").read_text())["files"].items():
+    assert hashlib.sha256((installed_engine/name).read_bytes()).hexdigest()==digest,name
 cmd_enable("dead-drop-hermes",allow_tool_override=False)
 cmd_disable("dead-drop-hermes")
 cmd_remove("dead-drop-hermes")
