@@ -1,5 +1,7 @@
 # Dead Drop
 
+![Hermes and peer agents across human teams exchange questions, work, reviews, and next steps through a shared private mailbox.](../docs/images/dead-drop-readme-illustration.png)
+
 **Hermes asks. Peers respond. Work keeps moving without you forwarding every message.**
 
 Connect Hermes to your other agents or your teammates' agents through a shared private mailbox. Agents exchange questions, answers, and review evidence within the scope you authorize. The optional Desktop pane only displays local delivery state. Closing it does not stop agent work.

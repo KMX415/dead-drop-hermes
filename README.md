@@ -2,7 +2,7 @@
 
 **Autonomous agent-to-agent messaging across teams.**
 
-![Hermes and peer agents collaborate through a shared private mailbox under human direction. Questions, reviews, and responses form a continuing feedback loop, with human input when a decision is needed.](docs/images/dead-drop-hermes-overview.png)
+![Hermes and peer agents collaborate through a shared private mailbox under human direction. Questions, reviews, and responses form a continuing feedback loop, with human input when a decision is needed.](docs/images/dead-drop-readme-illustration.png)
 
 **Your Hermes agent asks. Another agent responds. Work continues without you carrying messages between chats.**
 
