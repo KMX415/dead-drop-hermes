@@ -1,6 +1,6 @@
 {
   "source": "https://github.com/KMX415/Dead-Drop",
-  "commit": "acbc2290762ed468c0c39679d3bba50fb7c5e6d0",
+  "commit": "e6c161b9ade444fd8541609f6c1cc278731729ee",
   "adaptations": [
     "github.mjs: direct fixed-origin HTTPS using a Hermes-provided credential; no GitHub CLI credential lookup"
   ],
@@ -9,12 +9,12 @@
     "config.mjs": "7873d10b3a1633f0da1ced7b09a97c3616be7802c9b9acfb275df6154665c95c",
     "contract-recovery-authorization.mjs": "06297698fc890e9aef9509e1ae8865655bdc94d0aacf1d4971b8cf6ecd9589c0",
     "contracts.mjs": "56ae96f96193d5a122fa164290b6e1de518ef8129e513d119f5efc0deebde27f",
-    "coordination.mjs": "36fb89f05a7c18a4a20168656986fea6f99fd651e408be5d40a46d302c3f84c8",
+    "coordination.mjs": "c2f1a5f8e62f3980ab64ba4e87fb23bf6ad8dceba761da5f321956c0f702591a",
     "decisions.mjs": "e45f0da9d6f25849c0d6e334542658d4db9f1bdc8c0d3cbb277ad01f75f70e11",
-    "github.mjs": "8544983c82ee3550e1fca808703c5b9079b3a39b266600c824276b3b4cb820e9",
+    "github.mjs": "13241931b82ee6c26499a47bb8bde03a1361b762be53a895f6dbf40561bb7f18",
     "goals.mjs": "64d9971cb5f34e8e88d3809a3c7ca2b8ca2c96b1a905ef6b5b66a5e01c7b2c55",
     "handoffs.mjs": "ad16cb4307332d1b6655376a19c373bfc592f49b3e7ed0913dc139ab6e703cde",
-    "integration-checks.mjs": "171a9a6d5f32e19085a60e9820483d0adf8d957e795ef86c5e8ee9e545b3c0e5",
+    "integration-checks.mjs": "e44729be69630bafef0b9b7a84f188f4947b666b60293b357f99bf21e57d8298",
     "LICENSE": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
     "mailbox.mjs": "7f8cb4125a6fe1b0d450049f2b81a93e590f722deae7d92689b7c084c1e36596",
     "next-actions.mjs": "5ce97a9754f7dcfccb92c132eee1f93e4e84e16e957928a30be2a5584ac54598",
@@ -24,12 +24,13 @@
     "recovery.mjs": "7385efeb0d31b8dfd554cbd02b83f066912ab204ff73aeb18db13ab3407abe7d",
     "review-cycles.mjs": "685110b8d85039014461324169f6db3cf940c77eb08089d0d904e5bee6e33b9d",
     "RIGHTS.md": "8b6f114d89bb2a5e7de3c9e31f8ba15bf70f25dd9c491f98577b0916794b8a29",
-    "routing.mjs": "3d79de6e0340751ff46603a6b89f3a1e362d0a7a36e91ab6e4124d19bf68d0da",
+    "routing.mjs": "f17d473b0eaff81186f2b4118e48c8769cb09cee2211009e9c308005eff610c2",
     "skill-improvement.mjs": "dbf74599db3ef88f36f6e9e46f542dad5979dffb1e2e0c0950459b042b51fda7",
     "skill-selection.mjs": "d7d2c5066e65899a745ac6d1b86158a7d3db1d3ed369b410339e4635a7e1c53a",
     "skills.mjs": "8eca3b488e95c72fb14902d79e5bb8639f3c46074c90df868e0f26d101a18a8a",
-    "tasks.mjs": "562860b54b76c684f977bb075525c33f7e7cdd582df4e9becb65fde68a0f2919",
-    "worker-runs.mjs": "8f3e64a4403cbb04679694b105a5230d2c599014d5b171095306f59b0862188f"
+    "tasks.mjs": "830310f7a123a3de977c93e0a945feae4e52c43212147065d147faa5d5123c13",
+    "worker-runs.mjs": "8f3e64a4403cbb04679694b105a5230d2c599014d5b171095306f59b0862188f",
+    "segmented-storage.mjs": "3f50dd20db6d807df5fe658a4af0b873aa1d7f3aa5651f8e9ebdcd4a3bbed4b3"
   },
   "normalization": "Text files use LF line endings in the native package."
 }

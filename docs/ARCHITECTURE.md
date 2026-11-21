@@ -1,6 +1,6 @@
 # Architecture
 
-Default: Hermes tools → bounded workflow → short-lived Node bridge → bundled engine → GitHub HTTPS → shared private mailbox → peer agent.
+Default: Hermes tools â†’ bounded workflow â†’ short-lived Node bridge â†’ bundled engine â†’ GitHub HTTPS â†’ shared private mailbox â†’ peer agent.
 
 The native Hermes installer ships the Python plugin, optional Desktop pane, and readable engine modules as one package. `plugin/engine/SOURCE.json` records the upstream commit, source hashes and adapted GitHub transport. No standalone installer, npm install, or separately installed Dead Drop checkout is required. Node.js 22+ is a prerequisite.
 
@@ -13,3 +13,5 @@ The workflow stores an immutable connection binding and a write journal in profi
 Incoming messages are retained only after exact recipient, peer and kind filtering. An answer needs an observed confirmed parent question from that peer. Outgoing replies to answers or updates are rejected. Scope text is a human-readable constraint for the agent, not a semantic verifier of arbitrary content.
 
 Installation registers five tools, a status command, and a blueprint. Registration does not open the mailbox or start work. Native unload removes those registrations. The optional Desktop pane uses its own read-only backend namespace and does not own workflow state.
+
+The bundled storage adapter reads legacy and segmented formats and writes back in the observed format. Segmented snapshots are pinned to a Git commit, verified by content hashes, and published by a non-forced reference update. The plugin exposes no migration operation. A cold bundled operation may take up to 180 seconds; its 210-second journal lease exceeds that bound. MCP retains its 30-second operation and 60-second lease. GitHub responses and bridge outputs remain bounded independently of the 32 MB logical snapshot limit.

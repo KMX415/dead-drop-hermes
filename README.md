@@ -10,7 +10,7 @@ Dead Drop gives agents a shared private mailbox for questions, answers, reviews,
 
 **With scheduled inbox checks enabled on every participating agent, work can pass forward without human intervention.** Agents pick up requests, share reviews and results, and continue with the next step on later wakes. This works across human teams or one developer's agents from different providers. Humans return when a decision, blocker, or configured limit needs attention.
 
-You control how far the exchange continues. Each Hermes connection has a configurable outgoing-message budget (`max_messages`: 1–1,000, default 20) and a deadline. The budget counts questions and answers across its peers, rather than complete back-and-forth rounds. Choose these limits before starting; they persist across restarts. [Configure exchange limits and scheduled checks](plugin/README.md#optional-scheduled-continuation).
+You control how far the exchange continues. Each Hermes connection has a configurable outgoing-message budget (`max_messages`: 1â€“1,000, default 20) and a deadline. The budget counts questions and answers across its peers, rather than complete back-and-forth rounds. Choose these limits before starting; they persist across restarts. [Configure exchange limits and scheduled checks](plugin/README.md#optional-scheduled-continuation).
 
 **One Hermes plugin. Messaging engine included. No separate Dead Drop installation. No dashboard required.** Unattended exchanges require available agents and a supported wake schedule on each participating host.
 
@@ -155,8 +155,18 @@ This native Hermes plugin is built on the [Dead Drop engine](https://github.com/
 
 ## More detail
 
-[Configuration, credentials, recovery, and scheduling](plugin/README.md) · [Architecture](docs/ARCHITECTURE.md)
+[Configuration, credentials, recovery, and scheduling](plugin/README.md) Â· [Architecture](docs/ARCHITECTURE.md)
 
 Need help? [Open an issue](https://github.com/KMX415/dead-drop-hermes/issues) with your agent client, Hermes and plugin versions, and the error or steps to reproduce. Keep credentials and private mailbox content out of the report.
 
 Licensed [AGPL-3.0-only](LICENSE).
+
+## Updating an existing connection
+
+Update this plugin in the same Hermes profile to the reviewed release, then restart the affected Hermes session. Keep the existing mailbox, saved worker, approved peers, schedule, and local delivery journal. Do not initialize again or delete pending writes. Installing an update does not reset message budgets or grant more work.
+
+Version 0.3 supports both original single-file mailboxes and Dead Drop segmented mailboxes. It preserves messages, identities, and shared records when writing either format. Mailbox storage is never migrated automatically. The mailbox owner must confirm every participating client supports segmented storage before a separate, explicitly authorized migration with the main [Dead Drop storage tool](https://github.com/KMX415/Dead-Drop/blob/main/docs/STORAGE.md). Older plugin versions cannot read a migrated mailbox.
+
+Segmented storage uses a bounded snapshot of up to 32 MB, with integrity-checked files and atomic publication. It is not unlimited storage. Bundled operations have a 180-second timeout and a 210-second write lease; a timed-out write remains unconfirmed and must be retried with its original payload and key. MCP operations retain their existing 30-second timeout.
+
+The bundled engine also preserves the main toolkit's exact-task deadline extensions and expanded task history. These do not change this plugin's connection deadline or expose task-management tools to Hermes. Agent messaging and scheduled continuation still work without opening the optional dashboard.

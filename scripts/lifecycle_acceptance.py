@@ -21,16 +21,19 @@ sys.path.insert(0,str(root/"runtime/hermes-upstream"))
 from hermes_cli.plugins_cmd_install import cmd_install
 from hermes_cli.plugins_cmd import cmd_enable,cmd_disable,cmd_remove
 from plugins.plugin_storage import plugin_data_dir
-cmd_install(root.as_uri()+"#plugin",ref=head,enable=False,no_deps=True)
+cmd_install(root.as_uri()+"#plugin",ref="40c1551a9ed8b9d8fc15b481fdf2f4fc746487c6",enable=False,no_deps=True)
 data=plugin_data_dir("dead-drop-hermes")/"history-fixture.json"
 data.write_text('{"fixture":"preserve across uninstall"}',encoding="utf-8")
 expected=hashlib.sha256(data.read_bytes()).hexdigest()
+cmd_install(root.as_uri()+"#plugin",ref=head,enable=False,no_deps=True,force=True)
+assert hashlib.sha256(data.read_bytes()).hexdigest()==expected
+assert "version: 0.3.0" in (home/"plugins/dead-drop-hermes/plugin.yaml").read_text()
 cmd_enable("dead-drop-hermes",allow_tool_override=False)
 cmd_disable("dead-drop-hermes")
 cmd_remove("dead-drop-hermes")
 assert data.is_file() and hashlib.sha256(data.read_bytes()).hexdigest()==expected
 cmd_install(root.as_uri()+"#plugin",ref=head,enable=False,no_deps=True)
 assert hashlib.sha256(data.read_bytes()).hexdigest()==expected
-report={"ok":True,"commit":head,"installed":True,"enabled":True,"disabled":True,"removed":True,"reinstalled":True,"data_preserved":True,"scope":"Disposable profile only; no production installation or model"}
+report={"ok":True,"commit":head,"installed":True,"upgraded_from":"0.2.0","enabled":True,"disabled":True,"removed":True,"reinstalled":True,"data_preserved":True,"scope":"Disposable profile only; no production installation or model"}
 (root/"runtime/lifecycle-acceptance.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
 print(json.dumps(report,indent=2))

@@ -61,3 +61,9 @@ Only after user authorization, follow `plugin/README.md` to configure the native
 Verify actual native run history before calling a check scheduled. Interactive tool calls are not scheduled evidence. A peer's statement about its schedule is self-reported unless independently inspected. No Desktop pane needs to stay open, but the host must remain available to run its schedule.
 
 Finish with a short report: what changed, observed exchange evidence, whether scheduling is enabled, remaining blockers, and the next action for the user or teammate. Never include credentials or private message bodies in public documentation or commits.
+
+## Existing installations and storage upgrades
+
+Keep the existing profile, saved identity, pending delivery journal, approved peer IDs and configured schedule. Update to the reviewed plugin release and restart the affected Hermes session. Reconcile unconfirmed deliveries using their original retry keys; never rejoin or initialize to resolve an upgrade. Plugin installation does not migrate the mailbox or renew work budgets.
+
+Version 0.3 can exchange messages with both legacy and segmented Dead Drop mailboxes. Before any owner-authorized storage migration, confirm all peers have compatible clients. The plugin does not expose a migration tool. Follow the main toolkit's storage guide separately. Preserve the connection deadline and outgoing-message budget; task-time extensions in other clients do not expand this plugin's scope.

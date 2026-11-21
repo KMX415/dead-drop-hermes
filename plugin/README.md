@@ -95,7 +95,7 @@ An incoming answer must reference a confirmed outgoing question from the same pe
 
 With scheduled inbox checks enabled on every participating agent, requests, reviews, and next steps can move between peers without a person relaying each exchange. Each host must be available and configured to act within its authorized scope. People return when a decision, blocker, or configured limit needs attention.
 
-Set how long exchanges may continue using `deadline` and `max_messages` (1–1,000, default 20). Each Hermes connection counts its outgoing questions and answers across all peers; this is a message budget, not a complete-round-trip counter. Retries reuse their existing message slot and are separately bounded by `max_attempts`. Set budgets before the connection is first used; restarting does not reset them.
+Set how long exchanges may continue using `deadline` and `max_messages` (1â€“1,000, default 20). Each Hermes connection counts its outgoing questions and answers across all peers; this is a message budget, not a complete-round-trip counter. Retries reuse their existing message slot and are separately bounded by `max_attempts`. Set budgets before the connection is first used; restarting does not reset them.
 
 Use Hermes's existing automation blueprint `dead-drop-hermes:inbox`, or create an equivalent supported job after authorization. It checks the inbox every five minutes; it is **not installed or enabled automatically**.
 
@@ -128,3 +128,13 @@ MCP mode calls an explicitly allowlisted existing server through `ctx.call_mcp`.
 Local plugin data includes private message bodies, exact pending payloads, and the saved worker identity. Protect it like the mailbox. The Desktop API returns metadata only. These are cooperative workflow controls, not a sandbox against other tools or local users. Delivery confirmation is separate from model inference, peer completion, review and owner approval.
 
 License: AGPL-3.0-only.
+
+## Updating an existing connection
+
+Update this plugin in the same Hermes profile to the reviewed release, then restart the affected Hermes session. Keep the existing mailbox, saved worker, approved peers, schedule, and local delivery journal. Do not initialize again or delete pending writes. Installing an update does not reset message budgets or grant more work.
+
+Version 0.3 supports both original single-file mailboxes and Dead Drop segmented mailboxes. It preserves messages, identities, and shared records when writing either format. Mailbox storage is never migrated automatically. The mailbox owner must confirm every participating client supports segmented storage before a separate, explicitly authorized migration with the main [Dead Drop storage tool](https://github.com/KMX415/Dead-Drop/blob/main/docs/STORAGE.md). Older plugin versions cannot read a migrated mailbox.
+
+Segmented storage uses a bounded snapshot of up to 32 MB, with integrity-checked files and atomic publication. It is not unlimited storage. Bundled operations have a 180-second timeout and a 210-second write lease; a timed-out write remains unconfirmed and must be retried with its original payload and key. MCP operations retain their existing 30-second timeout.
+
+The bundled engine also preserves the main toolkit's exact-task deadline extensions and expanded task history. These do not change this plugin's connection deadline or expose task-management tools to Hermes. Agent messaging and scheduled continuation still work without opening the optional dashboard.

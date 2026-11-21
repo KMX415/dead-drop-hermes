@@ -182,4 +182,29 @@ class Tests(unittest.TestCase):
             def register_command(self,*a,**kw):self.commands.append(a)
             def register_automation_blueprint(self,*a,**kw):self.blueprints.append(a)
         ctx=Ctx();register(ctx);self.assertEqual(len(ctx.tools),5);self.assertEqual(len(ctx.blueprints),1)
+
+    def test_bundled_timeout_has_longer_write_lease(self):
+        from plugin.runtime import BUNDLED_TIMEOUT
+        observed=[]
+        original=self.t.__call__
+        def call(server,tool,args,timeout):
+            with self.w.db() as db:
+                lease=db.execute("SELECT lease FROM writes WHERE key=?",(args['request_id'],)).fetchone()[0]
+            observed.append((timeout,lease-self.clock[0]))
+            return original(server,tool,args,timeout)
+        self.w.call=call
+        self.w.send(P,"question","timeout-lease")
+        self.assertEqual(observed,[(BUNDLED_TIMEOUT,BUNDLED_TIMEOUT+30)])
+
+    def test_mcp_timeout_keeps_existing_bound(self):
+        self.s['transport']='mcp'
+        workflow=self.new()
+        seen=[]
+        def call(server,tool,args,timeout):
+            seen.append(timeout)
+            return self.t(server,tool,args,timeout)
+        workflow.call=call
+        workflow.send(P,"question","mcp-bound")
+        self.assertEqual(seen,[30])
+
 if __name__=="__main__":unittest.main()

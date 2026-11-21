@@ -1,6 +1,6 @@
 {
   "hermes_source": "b200f5bc60e31588ba2cb60e288029c4a54ba5fa",
-  "dead_drop_source": "acbc2290762ed468c0c39679d3bba50fb7c5e6d0",
+  "dead_drop_source": "e6c161b9ade444fd8541609f6c1cc278731729ee",
   "transport": "Default: bundled readable engine over fixed-origin GitHub HTTPS; optional existing Hermes ctx.call_mcp connection",
   "live_validation": false,
   "hermes_release": "v0.22.7"

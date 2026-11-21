@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from .runtime import Blocked
+from .runtime import Blocked, BUNDLED_TIMEOUT
 
 class BundledTransport:
     def __init__(self, repo, secret_reader=None):
@@ -35,7 +35,7 @@ class BundledTransport:
             raise Blocked('Could not verify Node.js; check Node on PATH and restart Hermes before connecting') from None
         return token,node
 
-    def __call__(self, server, tool, args, timeout=30):
+    def __call__(self, server, tool, args, timeout=BUNDLED_TIMEOUT):
         if server != 'dead-drop-'+self.repo.lower().replace('/','--'):
             raise Blocked('Connection name does not match the mailbox')
         if tool not in {'check_inbox','send_message','acknowledge_message','connect','initialize'}:
@@ -48,7 +48,7 @@ class BundledTransport:
         try:
             result=subprocess.run([node,str(Path(__file__).with_name('bridge.mjs'))],
                 input=json.dumps(request),capture_output=True,text=True,encoding='utf-8',
-                timeout=min(timeout,30),env=env,
+                timeout=min(timeout,BUNDLED_TIMEOUT),env=env,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
             if result.returncode or len(result.stdout)>3000000:return {'ok':False}
             return json.loads(result.stdout)

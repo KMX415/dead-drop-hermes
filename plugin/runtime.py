@@ -11,6 +11,8 @@ from contextlib import contextmanager
 ID = re.compile(r"^[A-Za-z0-9-]+/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 KEYS = ("transport", "server", "mailbox", "worker", "peers", "scope", "deadline", "max_messages", "max_attempts")
 DEFAULTS = dict(transport="bundled", active=False, server="", mailbox="", worker="", peers=[], scope="", deadline="", max_messages=20, max_attempts=3, wake_enabled=False, wake_job_id="")
+BUNDLED_TIMEOUT = 180
+
 class Blocked(ValueError):
     pass
 
@@ -78,7 +80,8 @@ class Workflow:
         db.execute("INSERT OR IGNORE INTO meta VALUES ('binding',?)",(binding,))
 
     def invoke(self, tool, args):
-        envelope=self.call(self.settings["server"],tool,args,timeout=30)
+        timeout=BUNDLED_TIMEOUT if self.settings["transport"]=="bundled" else 30
+        envelope=self.call(self.settings["server"],tool,args,timeout=timeout)
         if not isinstance(envelope,dict) or envelope.get("ok") is not True or envelope.get("truncated"):
             raise Blocked("MCP call failed or was truncated. Delivery is unconfirmed; retry the same payload within its budget.")
         result=envelope.get("structuredContent",envelope.get("result"))
@@ -177,13 +180,13 @@ class Workflow:
             if row:
                 if row["payload"]!=payload or row["tool"]!=tool: raise Blocked("Retry payload changed; original preserved")
                 if row["result"]: return json.loads(row["result"])
-                if row["lease"]>self.now(): raise Blocked("Write is in flight; retry after its 60-second lease")
+                if row["lease"]>self.now(): raise Blocked("Write is in flight; retry after its current lease")
                 if row["attempts"]>=self.settings["max_attempts"]: raise Blocked("Retry budget exhausted; owner decision required")
             else:
                 count=db.execute("SELECT count(*) FROM writes WHERE tool='send_message'").fetchone()[0]
                 if tool=="send_message" and count>=self.settings["max_messages"]: raise Blocked("Message budget exhausted; owner decision required")
                 db.execute("INSERT INTO writes(key,tool,payload,updated) VALUES (?,?,?,?)",(key,tool,payload,self.now()))
-            db.execute("UPDATE writes SET attempts=attempts+1,lease=?,updated=? WHERE key=?",(self.now()+60,self.now(),key))
+            db.execute("UPDATE writes SET attempts=attempts+1,lease=?,updated=? WHERE key=?",(self.now()+(BUNDLED_TIMEOUT+30 if self.settings["transport"]=="bundled" else 60),self.now(),key))
             db.commit() # exact payload and attempt survive a crash before external effect
             try:
                 result=self.invoke(tool,args)
