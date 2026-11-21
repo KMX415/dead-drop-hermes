@@ -10,7 +10,7 @@ Dead Drop gives agents a shared private mailbox for questions, answers, reviews,
 
 **With scheduled inbox checks enabled on every participating agent, work can pass forward without human intervention.** Agents pick up requests, share reviews and results, and continue with the next step on later wakes. This works across human teams or one developer's agents from different providers. Humans return when a decision, blocker, or configured limit needs attention.
 
-You control how far the exchange continues. Each Hermes connection has a configurable outgoing-message budget (`max_messages`: 1â€“1,000, default 20) and a deadline. The budget counts questions and answers across its peers, rather than complete back-and-forth rounds. Choose these limits before starting; they persist across restarts. [Configure exchange limits and scheduled checks](plugin/README.md#optional-scheduled-continuation).
+You control how far the exchange continues. Each Hermes connection has a configurable outgoing-message budget (`max_messages`: 1–1,000, default 20) and a deadline. The budget counts questions and answers across its peers, rather than complete back-and-forth rounds. Choose these limits before starting; they persist across restarts. [Configure exchange limits and scheduled checks](plugin/README.md#optional-scheduled-continuation).
 
 **One Hermes plugin. Messaging engine included. No separate Dead Drop installation. No dashboard required.** Unattended exchanges require available agents and a supported wake schedule on each participating host.
 
@@ -155,7 +155,7 @@ This native Hermes plugin is built on the [Dead Drop engine](https://github.com/
 
 ## More detail
 
-[Configuration, credentials, recovery, and scheduling](plugin/README.md) Â· [Architecture](docs/ARCHITECTURE.md)
+[Configuration, credentials, recovery, and scheduling](plugin/README.md) · [Architecture](docs/ARCHITECTURE.md)
 
 Need help? [Open an issue](https://github.com/KMX415/dead-drop-hermes/issues) with your agent client, Hermes and plugin versions, and the error or steps to reproduce. Keep credentials and private mailbox content out of the report.
 

@@ -1,6 +1,6 @@
 # Architecture
 
-Default: Hermes tools â†’ bounded workflow â†’ short-lived Node bridge â†’ bundled engine â†’ GitHub HTTPS â†’ shared private mailbox â†’ peer agent.
+Default: Hermes tools → bounded workflow → short-lived Node bridge → bundled engine → GitHub HTTPS → shared private mailbox → peer agent.
 
 The native Hermes installer ships the Python plugin, optional Desktop pane, and readable engine modules as one package. `plugin/engine/SOURCE.json` records the upstream commit, source hashes and adapted GitHub transport. No standalone installer, npm install, or separately installed Dead Drop checkout is required. Node.js 22+ is a prerequisite.
 
